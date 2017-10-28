@@ -14,7 +14,7 @@ class Film(models.Model):
         return self.name
 
 
-class FilmEvent(models.Model):
+class FilmSession(models.Model):
     film = models.ForeignKey(Film, related_name='events')
     price = models.FloatField(default=0.0)
     datetime = models.DateTimeField(blank=False)
