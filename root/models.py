@@ -60,8 +60,11 @@ class CinemaPlace(models.Model):
 class FilmSessionPlace(models.Model):
     place = models.ForeignKey(CinemaPlace)
     film_session = models.ForeignKey(FilmSession, related_name='places', on_delete=models.CASCADE)
-    price = models.FloatField(validators=[MinValueValidator(0)])
+    price = models.FloatField(validators=[MinValueValidator(0)], default=0.0)
     owner = models.ForeignKey(UserModel, blank=True, related_name='tickets')
+
+    def is_free(self):
+        return True if self.owner else False
 
 
 class FilmPoster(models.Model):
