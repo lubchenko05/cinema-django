@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
 
 from api.views import FilmView, CinemaView, CinemaDetailView, PosterView, PosterDetailView, FilmDetailView, \
@@ -27,6 +27,8 @@ urlpatterns = [
     url(r'^genre/(?P<pk>[0-9]+)/$', GenreDetailView.as_view(), name='genre-detail'),
 
     url(r'^registration/$', UserCreateView.as_view(), name='user-create'),
-    url(r'^user/$', UserDetailView.as_view(), name='user-detail')
+    url(r'^user/$', UserDetailView.as_view(), name='user-detail'),
+
+    url(r'^docs/', include('rest_framework_docs.urls')),
 
 ]
