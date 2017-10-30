@@ -98,5 +98,6 @@ db.sqlite3
 # vscode
 .vscode/
 
+media/
 
 local_settings.py

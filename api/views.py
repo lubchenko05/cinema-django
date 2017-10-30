@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import status
 
 from rest_framework.generics import ListCreateAPIView, RetrieveDestroyAPIView
-from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from api.permissions import IsStaffOrReadOnly
@@ -18,8 +18,7 @@ class FilmView(ListCreateAPIView):
     queryset = Film.objects.all()
 
     def list(self, request, *args, **kwargs):
-        queryset = Film.objects.all()
-        serializer = FilmSerializer(queryset, many=True)
+        serializer = FilmSerializer(self.queryset, many=True)
         return Response(serializer.data)
 
 
@@ -49,8 +48,7 @@ class PosterView(ListCreateAPIView):
     queryset = FilmPoster.objects.all()
 
     def list(self, request, *args, **kwargs):
-        queryset = FilmPoster.objects.all()
-        serializer = FilmPosterSerializer(queryset, many=True)
+        serializer = FilmPosterSerializer(self.queryset, many=True)
         return Response(serializer.data)
 
 
@@ -80,8 +78,7 @@ class CinemaView(ListCreateAPIView):
     queryset = Cinema.objects.all()
 
     def list(self, request, *args, **kwargs):
-        queryset = Cinema.objects.all()
-        serializer = CinemaSerializer(queryset, many=True)
+        serializer = CinemaSerializer(self.queryset, many=True)
         return Response(serializer.data)
 
 
@@ -101,6 +98,33 @@ class CinemaDetailView(RetrieveDestroyAPIView):
         else:
             return Response(data={'error': 'Not Found (404)'}, status=status.HTTP_404_NOT_FOUND)
 
+
+class FilmSessionView(ListCreateAPIView):
+    model = FilmSession
+    permission_classes = [IsStaffOrReadOnly]
+    serializer_class = FilmSessionSerializer
+    queryset = FilmSession.objects.all()
+
+    def list(self, request, *args, **kwargs):
+        serializer = FilmSessionSerializer(self.queryset, many=True)
+        return Response(serializer.data)
+
+
+class FilmSessionDetailView(RetrieveDestroyAPIView):
+    permission_classes = [IsStaffOrReadOnly]
+
+    def get(self, request, pk):
+        queryset = FilmSession.objects.filter(pk=pk).first()
+        if queryset:
+            return Response(FilmSessionSerializer(queryset).data)
+
+    def delete(self, request, pk):
+        queryset = FilmSession.objects.filter(pk=pk).first()
+        if queryset:
+            queryset.delete()
+            return Response(data={'ok': 'Deleted'}, status=status.HTTP_200_OK)
+        else:
+            return Response(data={'error': 'Not Found (404)'}, status=status.HTTP_404_NOT_FOUND)
 
 
 

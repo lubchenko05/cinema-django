@@ -34,8 +34,8 @@ class Cinema(models.Model):
 
 
 class FilmSession(models.Model):
-    film = models.ForeignKey(Film, related_name='events')
-    cinema = models.ForeignKey(Cinema, related_name='film_sessions', null=False)
+    film = models.ForeignKey(Film, related_name='events', on_delete=models.CASCADE)
+    cinema = models.ForeignKey(Cinema, related_name='film_sessions', on_delete=models.CASCADE)
     datetime = models.DateTimeField(blank=False)
 
     def __str__(self):
@@ -59,7 +59,7 @@ class CinemaPlace(models.Model):
 
 class FilmSessionPlace(models.Model):
     place = models.ForeignKey(CinemaPlace)
-    film_session = models.ForeignKey(FilmSession, related_name='places')
+    film_session = models.ForeignKey(FilmSession, related_name='places', on_delete=models.CASCADE)
     price = models.FloatField(validators=[MinValueValidator(0)])
     owner = models.ForeignKey(UserModel, blank=True, related_name='tickets')
 

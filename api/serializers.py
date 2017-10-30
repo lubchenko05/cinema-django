@@ -11,11 +11,17 @@ class GenreSerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 
+class GenreDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Genre
+        fields = ['id', 'name']
+
+
 class FilmPosterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FilmPoster
-        fields = ['id', 'image']
+        fields = ['id', 'image', 'film']
 
 
 class CinemaPlacesSerializer(serializers.ModelSerializer):
