@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from api.permissions import IsStaffOrReadOnly
 from api.serializers import FilmSerializer, FilmSessionSerializer, CinemaSerializer, FilmCreateSerializer, \
     FilmDetailSerializer, FilmPosterSerializer, CinemaDetailSerializer, FilmSessionDetailSerializer, \
-    GenreDetailSerializer, FilmSessionPlaceSerializer, UserSerializer
+    GenreDetailSerializer, FilmSessionPlaceSerializer, UserSerializer, GenreSerializer
 from root.models import Film, FilmSession, Cinema, FilmPoster, Genre, FilmSessionPlace
 
 
@@ -147,6 +147,17 @@ class FilmSessionDetailView(RetrieveDestroyAPIView):
             return Response(data={'ok': 'Deleted'}, status=status.HTTP_200_OK)
         else:
             return Response(data={'error': 'Not Found (404)'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class GenreView(ListCreateAPIView):
+    model = GenreSerializer
+    permission_classes = [IsStaffOrReadOnly]
+    serializer_class = GenreSerializer
+    queryset = Genre.objects.all()
+
+    def list(self, request, *args, **kwargs):
+        serializer = GenreSerializer(self.queryset.all(), many=True)
+        return Response(serializer.data)
 
 
 class GenreDetailView(RetrieveAPIView):

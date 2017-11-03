@@ -2,7 +2,8 @@ from django.conf.urls import url, include
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
 
 from api.views import FilmView, CinemaView, CinemaDetailView, PosterView, PosterDetailView, FilmDetailView, \
-    FilmSessionView, FilmSessionDetailView, GenreDetailView, find_films, ticket_buy, UserCreateView, UserDetailView
+    FilmSessionView, FilmSessionDetailView, GenreDetailView, find_films, ticket_buy, UserCreateView, UserDetailView, \
+    GenreView
 
 urlpatterns = [
     url(r'^token-auth/', obtain_jwt_token),
@@ -24,6 +25,7 @@ urlpatterns = [
 
     url(r'buy/(?P<pk>[0-9]+)/$', ticket_buy, name='buy-ticket'),
 
+    url(r'^genre/$', GenreView.as_view(), name='genre'),
     url(r'^genre/(?P<pk>[0-9]+)/$', GenreDetailView.as_view(), name='genre-detail'),
 
     url(r'^registration/$', UserCreateView.as_view(), name='user-create'),
